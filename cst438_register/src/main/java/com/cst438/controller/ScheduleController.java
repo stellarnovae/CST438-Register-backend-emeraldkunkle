@@ -97,6 +97,40 @@ public class ScheduleController {
 		
 	}
 	
+	@PostMapping("/addStudent")
+	@Transactional
+	public Student addStudent(@RequestBody Student newStudent) { 
+		
+		Student student = studentRepository.findByEmail(newStudent.getEmail());
+		
+		if (student == null && !newStudent.getName().isEmpty()) {
+			
+			return studentRepository.save(newStudent);
+			
+		} else {
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Name invalid or student exists in system.");
+		}
+		
+	}
+	
+	@PostMapping("/holds")
+	@Transactional
+	public void holdStudent(@RequestBody Student newStudent) { 
+		
+		Student student = studentRepository.findByEmail(newStudent.getEmail());
+		
+		if (student != null) {
+			
+			student.setStatus(newStudent.getStatus());
+			student.setStatusCode(newStudent.getStatusCode());
+			studentRepository.save(student);
+			
+		} else {
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student does not exists in system.");
+		}
+		
+	}
+	
 	@DeleteMapping("/schedule/{enrollment_id}")
 	@Transactional
 	public void dropCourse(  @PathVariable int enrollment_id  ) {
