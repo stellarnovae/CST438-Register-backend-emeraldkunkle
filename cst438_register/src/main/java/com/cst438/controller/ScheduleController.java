@@ -107,13 +107,15 @@ public class ScheduleController {
 			
 			return studentRepository.save(newStudent);
 			
-		} else {
+		} 
+		
+		else {
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Name invalid or student exists in system.");
 		}
 		
 	}
 	
-	@PostMapping("/holds")
+	@PostMapping("/holds")  
 	@Transactional
 	public void holdStudent(@RequestBody Student newStudent) { 
 		
